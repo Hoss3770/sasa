@@ -2,6 +2,7 @@ package com.example.parsecomlogin;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import android.app.Application;
@@ -11,13 +12,15 @@ public class ParseApp extends Application{
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Parse.initialize(this, "t9TGVd4RFpupFvA4LtYmRqCdRpIWfhwna7mQv2P1",
-				"0Ly6vF5LdfuROJvzoakPn9rWda0ML3p869PxFbgS");
+		Parse.enableLocalDatastore(this);
+		ParseObject.registerSubclass(Sasa.class);
+		Parse.initialize(this, "t9TGVd4RFpupFvA4LtYmRqCdRpIWfhwna7mQv2P1", "0Ly6vF5LdfuROJvzoakPn9rWda0ML3p869PxFbgS");
 		
+
+	    
 		ParseUser.enableAutomaticUser();
-		ParseACL defauAcl = new ParseACL();
-		
-		defauAcl.setPublicReadAccess(true);
-		ParseACL.setDefaultACL(defauAcl, true);
+		ParseUser.getCurrentUser().saveInBackground(); // <--- This Line
+		ParseACL defaultACL = new ParseACL();
+		ParseACL.setDefaultACL(defaultACL, true);
 	}
 }

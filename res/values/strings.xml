@@ -6,5 +6,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_welcome">Welcome</string>
     <string name="title_activity_login_signup">LoginSignupActivity</string>
+    <string name="title_activity_create_sasa">CreateSasa</string>
+    <string name="title_activity_sasa_detail_page">SasaDetailPage</string>
+    <string name="title_activity_groups_page">GroupsPage</string>
 
 </resources>
