@@ -2,6 +2,7 @@ package com.example.parsecomlogin;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,6 +11,7 @@ import org.json.JSONArray;
 import com.parse.ParseObject;
 
 import android.support.v7.app.ActionBarActivity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,29 +19,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class CreateSasa extends ActionBarActivity {
 	UserAndData userAndData;
+	ArrayList<CheckBox> cbs = new ArrayList<CheckBox>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create_sasa);
 		userAndData= new UserAndData().getInstance();
 		int i=0;//i use that for the id
-        for(String group: userAndData.groups){
-        	i++;
-        	RadioButton rdbtn = new RadioButton(this);
-        	rdbtn.setId(i*i);
-        	rdbtn.setChecked(true);
-        	rdbtn.setId(33);
-        	rdbtn.setText(group);
-        	((ViewGroup) findViewById(R.id.groupNameRadio)).addView(rdbtn);
-        }
-        
+		for(String group: userAndData.groups){
+			CheckBox cb = new CheckBox(getApplicationContext());
+			cbs.add(cb);
+            cb.setText(group);
+            cb.setTextColor(Color.rgb(0,0,0));
+            cb.setId(i*i);
+            ((TableRow)findViewById(R.id.groupCheckBoxes)).addView(cb);
+		}
 		Button submitbtn = (Button)findViewById(R.id.submitbtn);
 		submitbtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -73,12 +76,12 @@ public class CreateSasa extends ActionBarActivity {
 				String title= titleTxt.getText().toString();
 				sasa.put("title", title);
 				
-				///////////////////////get Date from date radio//////////////
-				dateRadioGroup= (RadioGroup) findViewById(R.id.groupNameRadio);
-				selectedDateid=dateRadioGroup.getCheckedRadioButtonId();
-				dateRadioButton= (RadioButton)findViewById(selectedDateid);
-				String groupName=(String) dateRadioButton.getText();
-				sasa.put("groups", new JSONArray().put(groupName));
+				///////////////////////get group names from checkboxes//////////////
+				JSONArray groups=new JSONArray();
+				for(CheckBox cb: cbs)
+					if(cb.isChecked())
+						groups.put(cb.getText().toString());
+				sasa.put("groups", groups);
 				//////////////////////////////////////
 				
 				sasa.put("fbid", userAndData.fbid);

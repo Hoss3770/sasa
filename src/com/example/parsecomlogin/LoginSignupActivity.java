@@ -183,11 +183,17 @@ class SasasListViewAdapter extends BaseAdapter{
             sasasfbids.add(sasa.getString("fbid"));
             sasasTitles.add(sasa.getString("title"));
             
-//            try {
-//				sasasGroups.add( sasa.getJSONArray("groups").getString(0));
-//			} catch (JSONException e) {
-//				e.printStackTrace();
-//			}
+            try {
+            	String groups="";
+            	for(i=0;i<sasa.getJSONArray("groups").length();i++){
+            		groups=groups+sasa.getJSONArray("groups").getString(i);
+            		if(i!=sasa.getJSONArray("groups").length()-1)
+            			groups=groups+",";
+            	}
+            	sasasGroups.add(groups);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
             sasasNumberDown.add(sasa.getJSONArray("fbidsDown").length());
             Date d=sasa.getDate("eventDate");
             DateFormat df = new SimpleDateFormat("hh:mm a");
@@ -239,13 +245,15 @@ class SasasListViewAdapter extends BaseAdapter{
             ImageView profileImage = (ImageView) vi.findViewById(R.id.profileImg);
             TextView timeView = (TextView) vi.findViewById(R.id.time);
             TextView numberDowntxt = (TextView) vi.findViewById(R.id.numberDowntxt);
+            TextView groupName = (TextView) vi.findViewById(R.id.groupNametxt);
             
             String url="https://graph.facebook.com/"+sasasfbids.get(position)+"/picture?type=large";
             Picasso.with(context).load(url).into(profileImage);
             
             titleView.setText(sasasTitles.get(position));
             timeView.setText(sasasTimes.get(position));
-            numberDowntxt.setText(""+sasasNumberDown.get(position)+" down to go");              
+            numberDowntxt.setText(""+sasasNumberDown.get(position)+" down to go");
+            groupName.setText(sasasGroups.get(position));
         }
         return vi;
     }

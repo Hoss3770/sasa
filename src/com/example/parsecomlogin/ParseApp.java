@@ -16,10 +16,8 @@ public class ParseApp extends Application{
 		ParseObject.registerSubclass(Sasa.class);
 		Parse.initialize(this, "t9TGVd4RFpupFvA4LtYmRqCdRpIWfhwna7mQv2P1", "0Ly6vF5LdfuROJvzoakPn9rWda0ML3p869PxFbgS");
 		
-
-	    
 		ParseUser.enableAutomaticUser();
-		ParseUser.getCurrentUser().saveInBackground(); // <--- This Line
+		ParseUser.getCurrentUser().saveInBackground();
 		ParseACL defaultACL = new ParseACL();
 		ParseACL.setDefaultACL(defaultACL, true);
 	}
